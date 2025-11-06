@@ -45,19 +45,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const backToTopButton = document.getElementById("backToTop");
-    if (!backToTopButton) {
-        return;
+    const togglerButtons = document.querySelectorAll(".navbar-toggler");
+    const hasBootstrapCollapse = typeof window.bootstrap !== "undefined" && typeof window.bootstrap.Collapse !== "undefined";
+
+    if (!hasBootstrapCollapse && togglerButtons.length) {
+        togglerButtons.forEach(button => {
+            const targetSelector = button.getAttribute("data-bs-target");
+            if (!targetSelector) {
+                return;
+            }
+            const target = document.querySelector(targetSelector);
+            if (!target) {
+                return;
+            }
+
+            button.addEventListener("click", () => {
+                const isExpanded = target.classList.toggle("show");
+                button.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+            });
+        });
     }
 
-    const toggleButtonVisibility = () => {
-        backToTopButton.style.display = window.scrollY > 320 ? "block" : "none";
-    };
+    const backToTopButton = document.getElementById("backToTop");
 
-    window.addEventListener("scroll", toggleButtonVisibility);
-    toggleButtonVisibility();
+    if (backToTopButton) {
+        const toggleButtonVisibility = () => {
+            backToTopButton.style.display = window.scrollY > 320 ? "block" : "none";
+        };
 
-    backToTopButton.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+        window.addEventListener("scroll", toggleButtonVisibility);
+        toggleButtonVisibility();
+
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
 });
