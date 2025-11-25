@@ -1,4 +1,3 @@
-// Handles footer year, navbar styling, scroll animations, and back-to-top visibility.
 document.addEventListener("DOMContentLoaded", () => {
     const yearSpan = document.getElementById("year");
     if (yearSpan) {
